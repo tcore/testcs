@@ -2,6 +2,7 @@ package tcore.service;
 
 import org.junit.Test;
 import tcore.dto.User;
+import tcore.exception.BadInputDataException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +36,15 @@ public class CsvUserIteratorTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine())
                 .thenReturn(null);
+        CsvUserIterator csvUserIterator = new CsvUserIterator(bufferedReader);
+        csvUserIterator.next();
+    }
+
+    @Test(expected = BadInputDataException.class)
+    public void testBrokenData() throws IOException {
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine())
+                .thenReturn("some broken data");
         CsvUserIterator csvUserIterator = new CsvUserIterator(bufferedReader);
         csvUserIterator.next();
     }

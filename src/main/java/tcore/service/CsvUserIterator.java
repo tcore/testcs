@@ -1,6 +1,7 @@
 package tcore.service;
 
 import tcore.dto.User;
+import tcore.exception.BadInputDataException;
 
 import java.io.*;
 import java.util.Iterator;
@@ -51,6 +52,10 @@ public class CsvUserIterator implements Iterator<User> {
                 throw new NoSuchElementException();
             }
             String[] items = line.split(separator);
+
+            if (2 != items.length) {
+                throw new BadInputDataException();
+            }
 
             return new User(items[0], Boolean.parseBoolean(items[1].trim()));
         } catch (IOException e) {
